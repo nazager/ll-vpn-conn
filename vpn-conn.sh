@@ -20,3 +20,16 @@ do
     ping -c 1 "$ST" | tail -1 | awk '{print $4}' | cut -d '/' -f 2 >> $RES
     nmcli con down id $̣{vpn}
 done < $VPNS
+
+# Id of the ll-vpn
+final=$(sort -nk 2 $RES | head -1 | awk '{print $2}')
+
+echo ""
+echo "Connecting to ${final}"
+echo ""
+
+# Finally connect to the minimum latency vpn
+nmcli con up id ${final}
+echo "Done!"
+
+rm $RES $VPNS
